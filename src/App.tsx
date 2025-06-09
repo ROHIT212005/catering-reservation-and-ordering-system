@@ -30,7 +30,7 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <Sonner />
-      <BrowserRouter>
+      <BrowserRouter basename="/-Catering-Reservation-and-Ordering-System">
         <AuthProvider>
           <CartProvider>
             <Routes>
