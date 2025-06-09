@@ -19,6 +19,11 @@
           window.location.href = '/-Catering-Reservation-and-Ordering-System/';
         }
       }
+      
+      // Define __WS_TOKEN__ to prevent errors in production
+      if (typeof __WS_TOKEN__ === 'undefined') {
+        window.__WS_TOKEN__ = 'dummy-token-for-production';
+      }
     </script>
     
     <!-- Start Single Page Apps for GitHub Pages -->
