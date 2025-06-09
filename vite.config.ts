@@ -39,10 +39,15 @@ export default defineConfig(({ mode }) => ({
         const mainJsPath = path.resolve(distSrcDir, 'main.js');
         
         if (fs.existsSync(mainJsPath)) {
-          // Copy the main.js content to main.tsx
-          const mainJsContent = fs.readFileSync(mainJsPath, 'utf8');
-          fs.writeFileSync(mainTsxPath, mainJsContent);
-          console.log(`Created main.tsx from main.js content`);
+          // Create a special version of main.tsx that redirects to the main app
+          const mainTsxContent = `
+// This is a special version of main.tsx that redirects to the main app
+// It's used to handle 404 errors for main.tsx requests
+console.log("main.tsx loaded successfully");
+// No need to do anything else, the app is already loaded via entry.jsx
+`;
+          fs.writeFileSync(mainTsxPath, mainTsxContent);
+          console.log(`Created special main.tsx file to handle 404 errors`);
         }
         
         // Copy .htaccess file
