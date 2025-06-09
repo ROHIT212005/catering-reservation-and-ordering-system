@@ -30,7 +30,7 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <Sonner />
-      <BrowserRouter basename="/-Catering-Reservation-and-Ordering-System">
+      <BrowserRouter basename={import.meta.env.DEV ? "/" : "/-Catering-Reservation-and-Ordering-System"}>
         <AuthProvider>
           <CartProvider>
             <Routes>
