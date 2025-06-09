@@ -33,6 +33,26 @@ export default defineConfig(({ mode }) => ({
             console.log(`Copied ${srcPath} to ${destPath}`);
           });
         }
+        
+        // Create a special main.tsx file that is actually JavaScript
+        const mainTsxPath = path.resolve(distSrcDir, 'main.tsx');
+        const mainJsPath = path.resolve(distSrcDir, 'main.js');
+        
+        if (fs.existsSync(mainJsPath)) {
+          // Copy the main.js content to main.tsx
+          const mainJsContent = fs.readFileSync(mainJsPath, 'utf8');
+          fs.writeFileSync(mainTsxPath, mainJsContent);
+          console.log(`Created main.tsx from main.js content`);
+        }
+        
+        // Copy .htaccess file
+        const htaccessSrc = path.resolve(__dirname, 'public', '.htaccess');
+        const htaccessDest = path.resolve(__dirname, 'dist', '.htaccess');
+        
+        if (fs.existsSync(htaccessSrc)) {
+          fs.copyFileSync(htaccessSrc, htaccessDest);
+          console.log(`Copied .htaccess file`);
+        }
       }
     },
     mode === 'development' &&
