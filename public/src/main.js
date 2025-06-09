@@ -1,29 +1,31 @@
-// This is a JavaScript file that will be served for main.tsx requests
-// It simply redirects to the main application
+// This is a special version of main.js that handles 404 errors
+console.log("main.js loaded successfully");
 
-// Create a div element to show a message
-const div = document.createElement('div');
-div.style.display = 'flex';
-div.style.justifyContent = 'center';
-div.style.alignItems = 'center';
-div.style.height = '100vh';
-div.style.flexDirection = 'column';
-div.style.fontFamily = 'Arial, sans-serif';
-
-// Create a heading
-const heading = document.createElement('h1');
-heading.textContent = 'Redirecting...';
-div.appendChild(heading);
-
-// Create a paragraph with a link
-const paragraph = document.createElement('p');
-paragraph.innerHTML = 'If you are not redirected automatically, please click <a href="/-Catering-Reservation-and-Ordering-System/">here</a>.';
-div.appendChild(paragraph);
-
-// Add the div to the body
-document.body.appendChild(div);
-
-// Redirect to the main application after a short delay
-setTimeout(function() {
-  window.location.href = '/-Catering-Reservation-and-Ordering-System/';
-}, 1000);
+// Simple JavaScript version that doesn't require React
+(function() {
+  // Check if we're in a browser environment
+  if (typeof window !== 'undefined') {
+    // Log that main.js was loaded
+    console.log('main.js loaded successfully');
+    
+    // Create a message element
+    var messageElement = document.createElement('div');
+    messageElement.style.display = 'none';
+    messageElement.id = 'main-js-loaded';
+    messageElement.textContent = 'main.js loaded successfully';
+    
+    // Add the message element to the body when it's available
+    if (document.body) {
+      document.body.appendChild(messageElement);
+    } else {
+      window.addEventListener('DOMContentLoaded', function() {
+        document.body.appendChild(messageElement);
+      });
+    }
+    
+    // Redirect to the main application after a short delay
+    setTimeout(function() {
+      window.location.href = '/-Catering-Reservation-and-Ordering-System/';
+    }, 100);
+  }
+})();

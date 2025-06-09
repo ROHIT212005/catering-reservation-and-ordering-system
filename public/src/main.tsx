@@ -1,33 +1,31 @@
-// This is a placeholder file to prevent 404 errors
-// The actual code is in the bundled JavaScript file
-import React from 'react';
-import ReactDOM from 'react-dom/client';
+// This is a special version of main.tsx that handles 404 errors
+console.log("main.tsx loaded successfully");
 
-// Create a simple component
-const PlaceholderComponent: React.FC = () => {
-  React.useEffect(() => {
-    // Redirect to the main application
-    window.location.href = '/-Catering-Reservation-and-Ordering-System/';
-  }, []);
-
-  return (
-    <div style={{ 
-      display: 'flex', 
-      justifyContent: 'center', 
-      alignItems: 'center', 
-      height: '100vh',
-      flexDirection: 'column',
-      fontFamily: 'Arial, sans-serif'
-    }}>
-      <h1>Redirecting...</h1>
-      <p>If you are not redirected automatically, please click <a href="/-Catering-Reservation-and-Ordering-System/">here</a>.</p>
-    </div>
-  );
-};
-
-// Render the component
-ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-  <React.StrictMode>
-    <PlaceholderComponent />
-  </React.StrictMode>
-);
+// Simple JavaScript version that doesn't require React
+(function() {
+  // Check if we're in a browser environment
+  if (typeof window !== 'undefined') {
+    // Log that main.tsx was loaded
+    console.log('main.tsx loaded successfully');
+    
+    // Create a message element
+    var messageElement = document.createElement('div');
+    messageElement.style.display = 'none';
+    messageElement.id = 'main-tsx-loaded';
+    messageElement.textContent = 'main.tsx loaded successfully';
+    
+    // Add the message element to the body when it's available
+    if (document.body) {
+      document.body.appendChild(messageElement);
+    } else {
+      window.addEventListener('DOMContentLoaded', function() {
+        document.body.appendChild(messageElement);
+      });
+    }
+    
+    // Redirect to the main application after a short delay
+    setTimeout(function() {
+      window.location.href = '/-Catering-Reservation-and-Ordering-System/';
+    }, 100);
+  }
+})();

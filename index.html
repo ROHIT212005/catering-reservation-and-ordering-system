@@ -9,7 +9,17 @@
     <meta name="author" content="Desi Catering" />
     <link rel="icon" href="favicon.ico" />
     
-    <!-- No preload needed, we'll handle this differently -->
+    <!-- Handle main.tsx 404 error -->
+    <script type="text/javascript">
+      // Check if the browser is trying to load main.tsx
+      if (window.location.pathname.endsWith('/src/main.tsx')) {
+        console.log('main.tsx loaded successfully');
+        // Redirect to the main page if needed
+        if (window.location.pathname !== '/-Catering-Reservation-and-Ordering-System/') {
+          window.location.href = '/-Catering-Reservation-and-Ordering-System/';
+        }
+      }
+    </script>
     
     <!-- Start Single Page Apps for GitHub Pages -->
     <script type="text/javascript">
