@@ -6,7 +6,7 @@ import fs from 'fs';
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
-  base: "/-Catering-Reservation-and-Ordering-System/", // Base path for GitHub Pages
+  base: mode === 'production' ? "/-Catering-Reservation-and-Ordering-System/" : "/", // Base path for GitHub Pages
   server: {
     host: "::",
     port: 8080,

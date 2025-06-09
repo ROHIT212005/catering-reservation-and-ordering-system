@@ -1,2 +1,3 @@
 // This file is used as the entry point for both development and production
-import './main.tsx';
+// Use an absolute import to avoid path issues
+import '@/main.tsx';
