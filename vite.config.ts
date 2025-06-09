@@ -53,6 +53,15 @@ export default defineConfig(({ mode }) => ({
           fs.copyFileSync(htaccessSrc, htaccessDest);
           console.log(`Copied .htaccess file`);
         }
+        
+        // Copy favicon.ico file
+        const faviconSrc = path.resolve(__dirname, 'public', 'favicon.ico');
+        const faviconDest = path.resolve(__dirname, 'dist', 'favicon.ico');
+        
+        if (fs.existsSync(faviconSrc)) {
+          fs.copyFileSync(faviconSrc, faviconDest);
+          console.log(`Copied favicon.ico file`);
+        }
       }
     },
     mode === 'development' &&
