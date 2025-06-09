@@ -25,7 +25,7 @@ import Header from '@/components/layout/Header';
 import { mockFirestore } from '@/lib/firebase';
 import { Product } from '@/types';
 import { Search, Plus, Edit, Trash } from 'lucide-react';
-import { toast } from '@/hooks/use-toast';
+import { toast } from '@/components/ui/use-toast';
 
 const AdminProducts = () => {
   const [products, setProducts] = useState<Product[]>([]);
@@ -37,18 +37,20 @@ const AdminProducts = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
 
-  // Redirect if not admin
-  if (!user || user.role !== 'admin') {
-    navigate('/');
-    return null;
-  }
-
   useEffect(() => {
+    // Redirect if not admin
+    if (!user || user.role !== 'admin') {
+      navigate('/');
+      return;
+    }
+    
     loadProducts();
-  }, []);
+  }, [user, navigate]);
 
   useEffect(() => {
-    filterProducts();
+    if (products.length > 0) {
+      filterProducts();
+    }
   }, [products, searchTerm]);
 
   const loadProducts = async () => {

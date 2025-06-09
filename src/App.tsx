@@ -13,6 +13,7 @@ import NotFound from "./pages/NotFound";
 import LoginForm from "./components/auth/LoginForm";
 import RegisterForm from "./components/auth/RegisterForm";
 import Products from "./pages/Products";
+import ProductDetail from "./pages/ProductDetail";
 import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
 import Orders from "./pages/Orders";
@@ -37,6 +38,7 @@ const App = () => (
               <Route path="/login" element={<LoginForm />} />
               <Route path="/register" element={<RegisterForm />} />
               <Route path="/products" element={<Products />} />
+              <Route path="/product/:id" element={<ProductDetail />} />
               <Route path="/cart" element={<Cart />} />
               <Route path="/checkout" element={<Checkout />} />
               <Route path="/orders" element={<Orders />} />

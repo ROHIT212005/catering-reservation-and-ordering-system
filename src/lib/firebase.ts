@@ -133,6 +133,23 @@ export const mockFirestore = {
     }),
     
     doc: (docId: string) => ({
+      get: async () => {
+        console.log(`Mock Firestore: Get ${collectionName}/${docId}`);
+        const items = JSON.parse(localStorage.getItem(`catering_${collectionName}`) || '[]');
+        const item = items.find((item: any) => item.id === docId);
+        if (item) {
+          return {
+            exists: true,
+            id: item.id,
+            data: () => item
+          };
+        } else {
+          return {
+            exists: false
+          };
+        }
+      },
+      
       update: async (data: any) => {
         console.log(`Mock Firestore: Update ${collectionName}/${docId}`, data);
         const items = JSON.parse(localStorage.getItem(`catering_${collectionName}`) || '[]');
