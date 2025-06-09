@@ -2,7 +2,7 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
 import { componentTagger } from "lovable-tagger";
-import copyMainPlugin from "./vite-plugin-copy-main";
+import fs from 'fs';
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
@@ -13,7 +13,28 @@ export default defineConfig(({ mode }) => ({
   },
   plugins: [
     react(),
-    copyMainPlugin(),
+    {
+      name: 'copy-public-files',
+      closeBundle() {
+        // Copy the public/src directory to dist/src
+        const publicSrcDir = path.resolve(__dirname, 'public', 'src');
+        const distSrcDir = path.resolve(__dirname, 'dist', 'src');
+        
+        if (!fs.existsSync(distSrcDir)) {
+          fs.mkdirSync(distSrcDir, { recursive: true });
+        }
+        
+        if (fs.existsSync(publicSrcDir)) {
+          const files = fs.readdirSync(publicSrcDir);
+          files.forEach(file => {
+            const srcPath = path.resolve(publicSrcDir, file);
+            const destPath = path.resolve(distSrcDir, file);
+            fs.copyFileSync(srcPath, destPath);
+            console.log(`Copied ${srcPath} to ${destPath}`);
+          });
+        }
+      }
+    },
     mode === 'development' &&
     componentTagger(),
   ].filter(Boolean),
