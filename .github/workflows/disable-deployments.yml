@@ -1,0 +1,29 @@
+name: Repository Information
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+jobs:
+  info:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        
+      - name: Repository Information
+        run: |
+          echo "# Catering Reservation and Ordering System"
+          echo ""
+          echo "This repository contains the source code for the Catering Reservation and Ordering System."
+          echo "The application is built with React, TypeScript, and Vite."
+          echo ""
+          echo "## Repository Status"
+          echo "- Last updated: $(date)"
+          echo "- Branch: ${{ github.ref_name }}"
+          echo "- Commit: ${{ github.sha }}"
+          echo ""
+          echo "## Note"
+          echo "This repository is for source code storage only. Deployment to GitHub Pages has been disabled."
