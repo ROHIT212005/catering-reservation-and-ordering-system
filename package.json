@@ -10,10 +10,7 @@
     "build:fast": "vite build --mode production --minify=esbuild",
     "build:minimal": "cross-env VITE_MINIMAL_BUILD=true vite build --mode production --minify=esbuild",
     "lint": "eslint .",
-    "preview": "vite preview",
-    "deploy": "powershell -ExecutionPolicy Bypass -File deploy.ps1",
-    "deploy:simple": "powershell -ExecutionPolicy Bypass -File deploy-simple.ps1",
-    "deploy:reliable": "powershell -ExecutionPolicy Bypass -File deploy-reliable.ps1"
+    "preview": "vite preview"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
