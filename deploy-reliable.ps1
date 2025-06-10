@@ -44,6 +44,16 @@ try {
 "@
     Set-Content -Path "dist/404.html" -Value $404Content
     
+    # Copy the gh-pages README file
+    if (Test-Path "README.gh-pages.md") {
+        Copy-Item -Path "README.gh-pages.md" -Destination "dist/README.md" -Force
+        # Update the timestamp in the README
+        $readmeContent = Get-Content -Path "dist/README.md" -Raw
+        $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+        $readmeContent = $readmeContent -replace "Last deployment: Generated during deployment", "Last deployment: $timestamp"
+        Set-Content -Path "dist/README.md" -Value $readmeContent
+    }
+    
     # Step 4: Create a direct deployment to gh-pages branch
     Write-Host "Creating direct deployment to gh-pages branch..." -ForegroundColor Green
     

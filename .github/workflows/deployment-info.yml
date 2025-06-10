@@ -1,0 +1,26 @@
+name: Deployment Information
+
+on:
+  push:
+    branches:
+      - gh-pages
+
+jobs:
+  deployment-info:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        
+      - name: Add deployment information
+        run: |
+          echo "# Deployment Branch"
+          echo "This branch contains the built files for GitHub Pages deployment."
+          echo "Do NOT merge this branch into the main/master branch."
+          echo ""
+          echo "The files in this branch are automatically generated from the source code in the master branch."
+          echo "Any changes made directly to this branch will be overwritten on the next deployment."
+          echo ""
+          echo "Last deployment: $(date)"
+          echo ""
+          echo "To update the website, make changes to the master branch and run the deployment script."
