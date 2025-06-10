@@ -1,0 +1,69 @@
+name: Fast Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+permissions:
+  contents: write  # Changed to write for direct push
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      
+      - name: Set up Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'npm'
+          
+      - name: Install dependencies
+        run: |
+          echo "Installing dependencies..."
+          npm ci --prefer-offline --no-audit
+          echo "Dependencies installed successfully"
+        
+      - name: Build with fast settings
+        run: |
+          echo "Starting fast build process..."
+          npm run build:fast
+          echo "Build completed successfully"
+          
+      - name: List build output
+        run: |
+          echo "Listing files in dist directory:"
+          ls -la dist
+          
+      - name: Create .nojekyll file
+        run: touch dist/.nojekyll
+        
+      - name: Create simple 404.html
+        run: |
+          cat > dist/404.html << 'EOL'
+          <!DOCTYPE html>
+          <html>
+          <head>
+            <meta charset="utf-8">
+            <title>Redirecting...</title>
+            <script>
+              window.location.href = '/-Catering-Reservation-and-Ordering-System/';
+            </script>
+          </head>
+          <body>
+            <p>If you are not redirected automatically, click <a href="/-Catering-Reservation-and-Ordering-System/">here</a>.</p>
+          </body>
+          </html>
+          EOL
+          
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: dist
+          branch: gh-pages
+          clean: true
