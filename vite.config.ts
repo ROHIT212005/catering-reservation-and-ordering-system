@@ -102,7 +102,6 @@ console.log("main.tsx loaded successfully");
       // For minimal builds, use simpler settings
       ...(isMinimalBuild ? {
         // Minimal build settings
-        cssMinify: 'lightningcss',
         cssCodeSplit: false,
         modulePreload: false,
       } : {}),
