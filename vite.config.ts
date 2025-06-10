@@ -5,7 +5,11 @@ import { componentTagger } from "lovable-tagger";
 import fs from 'fs';
 
 // https://vitejs.dev/config/
-export default defineConfig(({ mode }) => ({
+export default defineConfig(({ mode }) => {
+  // Check if we're doing a minimal build for deployment
+  const isMinimalBuild = process.env.VITE_MINIMAL_BUILD === 'true';
+  
+  return {
   base: mode === 'production' ? "/-Catering-Reservation-and-Ordering-System/" : "/", // Base path for GitHub Pages
   server: {
     host: "::",
@@ -84,7 +88,8 @@ console.log("main.tsx loaded successfully");
     assetsDir: 'assets',
     emptyOutDir: true,
     sourcemap: false,
-    minify: 'terser',
+    // Use esbuild for minimal builds (faster) or terser for regular builds (smaller)
+    minify: isMinimalBuild ? 'esbuild' : 'terser',
     terserOptions: {
       compress: {
         drop_console: true,
@@ -94,30 +99,47 @@ console.log("main.tsx loaded successfully");
     // Optimize build performance
     reportCompressedSize: false,
     chunkSizeWarningLimit: 1000,
+    // For minimal builds, use simpler settings
+    ...(isMinimalBuild ? {
+      // Minimal build settings
+      cssMinify: 'lightningcss',
+      cssCodeSplit: false,
+      modulePreload: false,
+    } : {}),
     rollupOptions: {
       input: {
         main: path.resolve(__dirname, 'index.html'),
       },
       output: {
         // Optimize chunk size
-        manualChunks: {
-          vendor: [
-            'react', 
-            'react-dom', 
-            'react-router-dom',
-            '@tanstack/react-query'
-          ],
-          ui: [
-            '@radix-ui/react-dialog',
-            '@radix-ui/react-dropdown-menu',
-            '@radix-ui/react-label',
-            '@radix-ui/react-slot',
-            '@radix-ui/react-toast',
-            'class-variance-authority',
-            'clsx',
-            'tailwind-merge'
-          ]
-        }
+        manualChunks: isMinimalBuild 
+          ? {
+              // Simpler chunks for minimal build
+              vendor: [
+                'react', 
+                'react-dom', 
+                'react-router-dom'
+              ]
+            }
+          : {
+              // Full optimization for regular build
+              vendor: [
+                'react', 
+                'react-dom', 
+                'react-router-dom',
+                '@tanstack/react-query'
+              ],
+              ui: [
+                '@radix-ui/react-dialog',
+                '@radix-ui/react-dropdown-menu',
+                '@radix-ui/react-label',
+                '@radix-ui/react-slot',
+                '@radix-ui/react-toast',
+                'class-variance-authority',
+                'clsx',
+                'tailwind-merge'
+              ]
+            }
       }
     },
   },
