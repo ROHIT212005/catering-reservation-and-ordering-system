@@ -1,22 +1,22 @@
-import { defineConfig } from "vite";
+import { defineConfig, type ConfigEnv, type UserConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
-import path from "path";
+import * as path from "path";
 import { componentTagger } from "lovable-tagger";
-import fs from 'fs';
+import * as fs from 'fs';
 
 // https://vitejs.dev/config/
-export default defineConfig(({ mode }) => {
+export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
   // Check if we're doing a minimal build for deployment
   const isMinimalBuild = process.env.VITE_MINIMAL_BUILD === 'true';
   
   return {
     base: mode === 'production' ? "/-Catering-Reservation-and-Ordering-System/" : "/", // Base path for GitHub Pages
+    // Server configuration with HMR settings
     server: {
       host: "::",
       port: 8080,
+      hmr: mode === 'production' ? false : true,
     },
-    // Disable HMR in production
-    hmr: mode === 'production' ? false : {},
     plugins: [
       react(),
       {
@@ -111,34 +111,38 @@ console.log("main.tsx loaded successfully");
         },
         output: {
           // Optimize chunk size
-          manualChunks: isMinimalBuild 
-            ? {
-                // Simpler chunks for minimal build
-                vendor: [
-                  'react', 
-                  'react-dom', 
-                  'react-router-dom'
-                ]
+          manualChunks: (id) => {
+            // For minimal builds, use simpler chunking
+            if (isMinimalBuild) {
+              if (id.includes('node_modules')) {
+                if (id.includes('react') || 
+                    id.includes('react-dom') || 
+                    id.includes('react-router-dom')) {
+                  return 'vendor';
+                }
+                return 'deps'; // All other dependencies
               }
-            : {
-                // Full optimization for regular build
-                vendor: [
-                  'react', 
-                  'react-dom', 
-                  'react-router-dom',
-                  '@tanstack/react-query'
-                ],
-                ui: [
-                  '@radix-ui/react-dialog',
-                  '@radix-ui/react-dropdown-menu',
-                  '@radix-ui/react-label',
-                  '@radix-ui/react-slot',
-                  '@radix-ui/react-toast',
-                  'class-variance-authority',
-                  'clsx',
-                  'tailwind-merge'
-                ]
+            } 
+            // For regular builds, use more detailed chunking
+            else {
+              if (id.includes('node_modules')) {
+                if (id.includes('react') || 
+                    id.includes('react-dom') || 
+                    id.includes('react-router-dom') ||
+                    id.includes('@tanstack/react-query')) {
+                  return 'vendor';
+                }
+                if (id.includes('@radix-ui') || 
+                    id.includes('class-variance-authority') ||
+                    id.includes('clsx') ||
+                    id.includes('tailwind-merge')) {
+                  return 'ui';
+                }
+                return 'deps'; // All other dependencies
               }
+            }
+            return null; // Default chunk
+          }
         }
       },
     },
